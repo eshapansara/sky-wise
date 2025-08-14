@@ -10,8 +10,7 @@ body {
     display: grid;
     gap: 1.5rem;
     margin: 0 auto;
-
-
+    max-width: 1200px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-areas:
         "search search search"
@@ -19,14 +18,14 @@ body {
         "weekly-forecast weekly-forecast alerts-card";
 }
 
-
 .search-section {
+    position: relative;
     grid-area: search;
     display: flex;
-    gap: 20px;
     justify-content: space-between;
+    gap: 15px;
     align-items: center;
-    max-width: 100%; /* Changed to span the entire width */
+    max-width: 100%;
     width: 100%;
     border-radius: 25px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -34,9 +33,16 @@ body {
     margin: 0 auto;
 }
 
+
+#search-form {
+    flex: 1;
+    max-width: 500px;
+}
+
+
 input {
     width: 100%;
-    max-width: 400px;
+    max-width: 100%;
     padding: 1rem;
     border: none;
     border-radius: 25px;
@@ -52,6 +58,15 @@ input:focus {
     outline: none;
 }
 
+.unit-toggle-container {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 8px; /* spacing between C, toggle, F */
+    white-space: nowrap; /* keeps everything inline */
+    margin-left: auto;
+}
+
 .current-weather-card, .hourly-forecast, .weekly-forecast, .alerts-card {
     padding: 1.5rem;
     border-radius: 10px;
@@ -60,22 +75,18 @@ input:focus {
 }
 
 .current-weather-card {
-
     grid-area: current-weather-card;
 }
 
 .hourly-forecast {
-
     grid-area: hourly-forecast;
 }
 
 .weekly-forecast {
-
     grid-area: weekly-forecast;
 }
 
 .alerts-card {
-
     grid-area: alerts-card;
 }
 
@@ -123,9 +134,11 @@ ul {
 }
 
 .forecast-day {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
     justify-content: space-between;
     align-items: center;
+    gap: 250px;
     padding: 8px 12px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
@@ -183,3 +196,29 @@ input:checked + .slider::before {
   background-color: white;
 }
 
+#suggestions-list {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+  display: none;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1000;
+}
+
+#suggestions-list li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: black;
+}
+
+#suggestions-list li:hover {
+  background-color: #f0f0f0;
+}

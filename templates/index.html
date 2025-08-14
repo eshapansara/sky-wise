@@ -12,21 +12,21 @@
         <div class="search-section">
         <form id="search-form" >
             <input type="text" id="search-input" placeholder="Search for a city" required/>
+            <ul id="suggestions-list"></ul>
         </form>
 
         <div class="unit-toggle-container">
-            <span class="unit-label">C</span>
+            <span class="unit-label">°C</span>
 
             <label for="unit-toggle" class="switch">
                 <input type="checkbox" id="unit-toggle">
                 <span class="slider round"></span>
             </label>
 
-            <span class="unit-label">F</span>
+            <span class="unit-label">°F</span>
         </div>
         </div>
 
-        <!--Current weather-->
         <div class="current-weather-card">
             <h2>Current Weather</h2>
             <p>Location: <span id="city-name">--</span></p>
@@ -45,22 +45,21 @@
         </div>
 
 
-        <!--Hourly forecast-->
         <div class="hourly-forecast">
             <h2>Hourly Forecast</h2>
             <div id="hourly-forecast"></div>
         </div>
 
-        <!--Weekly forecast-->
         <div class="weekly-forecast">
             <h2>Weekly Forecast</h2>
             <div id="weekly-forecast"></div>
         </div>
 
-        <!--Weather alert-->
         <div id ="alerts-card" class="alerts-card">
             <h3>Weather Alerts</h3>
+            <div id="alerts-content">
             <p id="weather-alert">No active alerts.</p>
+            </div>
         </div>
 
     </div>
