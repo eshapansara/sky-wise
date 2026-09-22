@@ -1,5 +1,3 @@
-const API_KEY = "b62c7bc294c2fcb565ea9928c1201787";
-
 let lastCity = "New York";
 const unitToggle = document.getElementById("unit-toggle");
 const searchForm = document.getElementById("search-form");
@@ -24,13 +22,23 @@ function unixToTime(unix_timestamp) {
 }
 
 async function getLocationDetails(city, limit = 5) {
-    const res = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=${limit}&appid=${API_KEY}`);
-    const data = await res.json();
-    if (data.length > 0) {
-        return data;
+    const res = await fetch(`/api/cities?q=${encodeURIComponent(city)}`);
+
+    if (!res.ok) {
+        throw new Error("Unable to search for city");
     }
+
+    const data = await res.json();
+
+    if (data.length > 0) {
+        return data.slice(0, limit);
+    }
+
     throw new Error("City not found");
 }
+    
+    
+
 
 async function getWeather(lat, lon, cityName, state, country) {
     try {
@@ -50,7 +58,7 @@ async function getWeather(lat, lon, cityName, state, country) {
             windSpeedUnit = 'm/s';
         }
 
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=${units}`);
+        const response = await fetch(`/api/weather?lat=${lat}&lon=${lon}&units=${units}`);
 
         if (!response.ok) {
             throw new Error("Weather data not found");
@@ -138,7 +146,7 @@ document.addEventListener('click', (e) => {
 
 async function getForecast(lat, lon, units, unitSymbol) {
     try {
-        const response = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,current&appid=${API_KEY}&units=${units}`);
+        const response = await fetch(`/api/forecast?lat=${lat}&lon=${lon}&units=${units}`);
         if (!response.ok) {
             throw new Error("Failed to get forecast");
         }

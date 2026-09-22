@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 import requests
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 
 load_dotenv()
 
@@ -82,6 +82,65 @@ def home():
 
     return render_template('index.html', weather=weather)
 
+
+@app.route('/api/cities')
+def search_cities():
+    city = request.args.get('q', '').strip()
+
+    if not city:
+        return jsonify([])
+
+    url = 'https://api.openweathermap.org/geo/1.0/direct'
+    params = {
+        'q': city,
+        'limit': 5,
+        'appid': API_KEY
+    }
+
+    response = requests.get(url, params=params)
+    return jsonify(response.json())
+
+
+@app.route('/api/weather')
+def weather_api():
+    lat = request.args.get('lat')
+    lon = request.args.get('lon')
+    units = request.args.get('units', 'metric')
+
+    if not lat or not lon:
+        return jsonify({"error": "Latitude and longitude are required"}), 400
+
+    url = 'https://api.openweathermap.org/data/2.5/weather'
+    params = {
+        'lat': lat,
+        'lon': lon,
+        'appid': API_KEY,
+        'units': units
+    }
+
+    response = requests.get(url, params=params)
+    return jsonify(response.json()), response.status_code
+
+@app.route('/api/forecast')
+def forecast_api():
+    lat = request.args.get('lat')
+    lon = request.args.get('lon')
+    units = request.args.get('units', 'metric')
+
+    if not lat or not lon:
+        return jsonify({"error": "Latitude and longitude are required"}), 400
+
+    url = 'https://api.openweathermap.org/data/3.0/onecall'
+    params = {
+        'lat': lat,
+        'lon': lon,
+        'exclude': 'minutely,current',
+        'appid': API_KEY,
+        'units': units
+    }
+
+    response = requests.get(url, params=params)
+    return jsonify(response.json()), response.status_code
 
 if __name__ == '__main__':
     app.run(debug=True)
